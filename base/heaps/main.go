@@ -18,56 +18,48 @@ func main() {
 	// this ensures all the logs are visible in stdout
 	logrus.SetLevel(logrus.DebugLevel)
 
-	//build array
-	initS := []int{2, 74, 0, 89, 14, 35}
-	// pushS := []int{2, 74, 0, 89, 14, 35}
+	//slice for building heap
+	initSlc := []int{2, 74, 0, 89, 14, 35}
 
-	// use init function
-	iHeap := FromInit(initS)
+	// use init function.
+	// iminHeap = min heap created using fromInit()
+	iMinHeap := InitMinHeap(initSlc)
+
+	// could also use push function
+	// pHeap := fromPush(pushS)
+	// but init is more efficient
 
 	// apply pop method to return min element
-	min := heap.Pop(iHeap)
+	min := heap.Pop(iMinHeap)
 	logrus.Warn("element poped: ", min)
-	logrus.Debug("heap after pop: ", *iHeap)
+	logrus.Debug("heap after pop: ", iMinHeap)
 
-	(*iHeap)[2] = 0
-	logrus.Info("change in value heap[2]:0")
-	logrus.Debug("heap after modify: ", *iHeap)
+	(*iMinHeap)[2] = 0
+	logrus.Info("change in value heap[2]=0")
+	logrus.Debug("heap after modify: ", *iMinHeap)
 
-	heap.Fix(iHeap, 2)
-	logrus.Debug("heap after fix: ", *iHeap)
-	// use push function
-	// pHeap := fromPush(pushS)
+	heap.Fix(iMinHeap, 2)
+	logrus.Debug("heap after fix: ", *iMinHeap)
 
 	logrus.Warn("element index:0 removed")
-	heap.Remove(iHeap, 0)
-	logrus.Debug("heap after removal: ", *iHeap)
-}
+	heap.Remove(iMinHeap, 0)
+	logrus.Debug("heap after removal: ", *iMinHeap)
 
-// takes O(n) time
-func FromInit(array []int) *MinHeap {
-	//store the array in heap
-	h := new(MinHeap)
-	*h = array
+	iMaxHeap := InitMaxHeap(initSlc)
 
-	// initial rearrangement is done
-	// the slice is rearranged according to 
-	// heap arrangement
-	heap.Init(h)
-	logrus.Debug("init heap called: ", *h)
+	max := heap.Pop(iMaxHeap)
+	logrus.Warn("element poped: ", max)
+	logrus.Debug("heap after pop: ", *iMaxHeap)
 
-	return h
-}
+	(*iMaxHeap)[2] = 99
+	logrus.Info("change in value heap[2]=99")
+	logrus.Debug("heap after modify: ", *iMaxHeap)
 
-func fromPush(array []int) *MinHeap {
-	
-	h := new(MinHeap)
+	heap.Fix(iMaxHeap, 2)
+	logrus.Debug("heap after fix: ", *iMaxHeap)
 
-	for _, v := range array {
-		heap.Push(h, v)
-	}
+	logrus.Warn("element index=0 removed")
+	heap.Remove(iMaxHeap, 0)
+	logrus.Debug("heap after removal: ", *iMaxHeap)
 
-	logrus.Debug("heap created by push: ", *h)
-
-	return h
 }

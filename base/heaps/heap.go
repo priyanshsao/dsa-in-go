@@ -2,7 +2,7 @@
 
 // following functions should be satisfied by your type
 
-// <type>.Init() 
+// <type>.Init()
 // work: convert an array to heap
 // time complexity:  O(n)
 
@@ -25,8 +25,9 @@
 package main
 
 type MinHeap []int
+type MaxHeap []int
 
-// returns the length of heap(indirectly: array)
+// returns the length of heap(indirectly: length of array)
 func (h MinHeap) Len() int {
 	return len(h)
 }
@@ -44,6 +45,31 @@ func (h *MinHeap) Push(v any) {
 }
 
 func (h *MinHeap) Pop() any {
+	old := *h
+	l := len(old)
+	v := old[l-1]
+	*h = old[:l-1]
+	return v
+}
+
+// returns the length of heap(indirectly: length of array)
+func (h MaxHeap) Len() int {
+	return len(h)
+}
+
+func (h MaxHeap) Less(i, j int) bool {
+	return h[j] < h[i]
+}
+
+func (h MaxHeap) Swap(i, j int) {
+	h[i], h[j] = h[j], h[i]
+}
+
+func (h *MaxHeap) Push(v any) {
+	*h = append(*h, v.(int))
+}
+
+func (h *MaxHeap) Pop() any {
 	old := *h
 	l := len(old)
 	v := old[l-1]
