@@ -22,57 +22,52 @@
 // work: remove and return an element at index i from the heap and update heap
 // time complexity:  O(logn)
 
-package main
+package heap
 
-type MinHeap []int
-type MaxHeap []int
+type HeapType int
 
-// returns the length of heap(indirectly: length of array)
-func (h MinHeap) Len() int {
-	return len(h)
-}
+const (
+	Min_Heap HeapType = iota
+	Max_Heap
+)
 
-func (h MinHeap) Less(i, j int) bool {
-	return h[i] < h[j]
-}
-
-func (h MinHeap) Swap(i, j int) {
-	h[i], h[j] = h[j], h[i]
-}
-
-func (h *MinHeap) Push(v any) {
-	*h = append(*h, v.(int))
-}
-
-func (h *MinHeap) Pop() any {
-	old := *h
-	l := len(old)
-	v := old[l-1]
-	*h = old[:l-1]
-	return v
+type Heap struct {
+	data []int
+	typeOf HeapType
 }
 
 // returns the length of heap(indirectly: length of array)
-func (h MaxHeap) Len() int {
-	return len(h)
+func (h Heap) Len() int {
+	return len(h.data)
 }
 
-func (h MaxHeap) Less(i, j int) bool {
-	return h[j] < h[i]
+func (h Heap) Less(i, j int) bool {
+	if h.typeOf == Max_Heap {
+		return h.data[j] < h.data[i]
+	}
+	return h.data[i] < h.data[j]
 }
 
-func (h MaxHeap) Swap(i, j int) {
-	h[i], h[j] = h[j], h[i]
+func (h Heap) Swap(i, j int) {
+	h.data[i], h.data[j] = h.data[j], h.data[i]
 }
 
-func (h *MaxHeap) Push(v any) {
-	*h = append(*h, v.(int))
+func (h *Heap) Push(v any) {
+	h.data = append(h.data, v.(int))
 }
 
-func (h *MaxHeap) Pop() any {
-	old := *h
+func (h *Heap) Pop() any {
+	old := h.data
 	l := len(old)
 	v := old[l-1]
-	*h = old[:l-1]
+	h.data = old[:l-1]
 	return v
+}
+
+func (h *Heap) Modify(i, v int) {
+	h.data[i] = v
+}
+
+func (h *Heap) Data() []int {
+	return h.data
 }
